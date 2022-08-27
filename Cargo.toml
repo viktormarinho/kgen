@@ -1,6 +1,6 @@
 [package]
 name = "kgen"
-version = "1.0.0"
+version = "0.3.0"
 edition = "2021"
 description = "Codegen tool for typescript React projects"
 license = "MIT"
