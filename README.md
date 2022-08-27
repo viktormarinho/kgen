@@ -12,4 +12,9 @@ You could also do:
 
 Generates a component in your /components directory, and thanks to the --data flag adds basic fetching data logic to it.
 The generated component should look something like this:
+
 `todo :p`
+
+All commands list:
+
+`todo as well`
