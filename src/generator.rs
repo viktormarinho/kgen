@@ -83,6 +83,8 @@ fn get_flags(arg_list: &mut Arguments) -> Vec<Flag> {
 }
 
 fn create_file(file: FileToGen, flags: Vec<Flag>) {
+
+    // NEED TO MAKE CORRECT PATH SELECTOR HERE.
     let mut path = String::new();
 
     if flags.contains(&Flag::Local) {
