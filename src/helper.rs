@@ -3,8 +3,17 @@ use colored::Colorize;
 
 pub fn show_usage() -> () {
     println!("==============================================");
-    println!("{} {} {}", "USAGE:".white(), "kgen".yellow(), "[FILE TYPE] [NAME] <EXTRA OPTIONS>".yellow().bold());
-    println!("{} {}", "EXAMPLE:".white(), "kgen component footer".yellow().italic());
+    println!(
+        "{} {} {}",
+        "USAGE:".white(),
+        "kgen".yellow(),
+        "[FILE TYPE] [NAME] <EXTRA OPTIONS>".yellow().bold()
+    );
+    println!(
+        "{} {}",
+        "EXAMPLE:".white(),
+        "kgen component footer".yellow().italic()
+    );
 }
 
 pub fn show_help(args: &Arguments) -> () {
@@ -15,9 +24,21 @@ pub fn show_help(args: &Arguments) -> () {
         println!("   {} | alias: {} | Generates a component file with boilerplate in the components directory.", "component".yellow(), "c".yellow());
         println!("   {} | alias: {} | Generates a page component file with boilerplate in the pages directory.", "page".yellow(), "p".yellow());
         println!("\n - {}", "OPTIONS:".blue().bold());
-        println!("   {} | alias: {} | Adds data fetching logic to the component.", "--data".yellow(), "-d".yellow());
-        println!("   {} | alias: {} | Creates the component in the current directory.", "--local".yellow(), "-l".yellow());
-        println!("   {} | alias: {} | Zimbas.", "--zimbas".yellow(), "-z".yellow());
+        println!(
+            "   {} | alias: {} | Adds data fetching logic to the component.",
+            "--data".yellow(),
+            "-d".yellow()
+        );
+        println!(
+            "   {} | alias: {} | Creates the component in the current directory.",
+            "--local".yellow(),
+            "-l".yellow()
+        );
+        println!(
+            "   {} | alias: {} | Zimbas.",
+            "--zimbas".yellow(),
+            "-z".yellow()
+        );
         println!("\n");
     }
 
