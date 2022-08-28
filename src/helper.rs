@@ -43,5 +43,4 @@ pub fn show_help(args: &Arguments) -> () {
 
         std::process::exit(0);
     }
-
 }

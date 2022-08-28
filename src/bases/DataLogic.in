@@ -1,0 +1,7 @@
+const [data, setData] = useState<DataType>({});
+
+    useEffect(() => {
+        fetch("").then(res => res.json().then(data => {
+            setData(data);
+        }))
+    }, [])

@@ -1,0 +1,19 @@
+import React from "react";
+%DATA_IMPORTS%
+
+interface %COMPONENT_NAME%Props {
+    %CHILDREN_TYPE%
+}
+children: React.ReactNode;
+
+%DATA_TYPE%
+
+export const %COMPONENT_NAME% = ({ %CHILDREN_EXISTS% }: %COMPONENT_NAME%Props) => {
+    %DATA_LOGIC%
+
+    return (
+        <>
+          {children}
+        </>
+    )
+}
