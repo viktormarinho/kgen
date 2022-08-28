@@ -1,3 +1,5 @@
+use colored::Colorize;
+
 use crate::{args_parser::Arguments, error_handler::throw_error};
 use std::{fs::{File, create_dir_all}, io::Write};
 
@@ -120,7 +122,9 @@ fn create_file(file: FileToGen, flags: Vec<Flag>) {
     let text = template_parser::get_full_text(&file, &flags);
 
     match buffer.write_all(text.as_bytes()) {
-        Ok(_) => {},
+        Ok(_) => {
+            println!("{}", format!("Created file {} with success.", path).bright_green());
+        },
         Err(msg) => throw_error(format!(
             "could not write to the created file {}.\nPlease report this bug.\nRust ERROR msg: {}",
             file.name,
