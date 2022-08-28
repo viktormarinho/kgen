@@ -1,4 +1,3 @@
-
 pub const DATA_VARS: &[&str] = &["%DATA_LOGIC%", "%DATA_IMPORTS%", "%DATA_TYPE%"];
 
 pub const DATA_REPLACERS: &[&str] = &[

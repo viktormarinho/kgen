@@ -1,5 +1,5 @@
 use crate::{args_parser::Arguments, error_handler::throw_error};
-use std::fs::File;
+use std::{fs::{File, create_dir_all}, io::Write};
 
 pub enum FileType {
     Component,
@@ -16,6 +16,7 @@ pub enum Flag {
 pub struct FileToGen {
     name: String,
     file_type: FileType,
+    extension: String,
 }
 
 fn get_file_type(type_input: &str) -> Option<FileType> {
@@ -40,6 +41,7 @@ pub fn generate(arg_list: Arguments) -> () {
     let file = FileToGen {
         name: format_name(arg_list[1].as_str()),
         file_type: get_file_type(arg_list[0].as_str()).unwrap(),
+        extension: String::from(".tsx"),
     };
 
     let flags = get_flags(&mut arg_list.clone());
@@ -82,16 +84,27 @@ fn get_flags(arg_list: &mut Arguments) -> Vec<Flag> {
     arg_list
 }
 
-fn create_file(file: FileToGen, flags: Vec<Flag>) {
+fn create_or_get_path(file: &FileToGen) -> String {
+    match file.file_type {
+        FileType::Component => {
+            create_dir_all("src/components/").unwrap();
+            String::from("src/components/")
+        },
+        FileType::Page => {
+            create_dir_all("src/pages/").unwrap();
+            String::from("src/pages/")
+        },
+    }
+}
 
-    // NEED TO MAKE CORRECT PATH SELECTOR HERE.
-    let mut path = String::new();
+fn create_file(file: FileToGen, flags: Vec<Flag>) {
+    let mut path = create_or_get_path(&file);
 
     if flags.contains(&Flag::Local) {
         path = String::from("./")
     }
 
-    let mut file_ref = match File::create(format!("{}{}", path, file.name)) {
+    let mut buffer = match File::create(format!("{}{}{}", path, file.name, file.extension)) {
         Ok(file_ref) => file_ref,
         Err(_) => {
             throw_error(format!(
@@ -105,11 +118,20 @@ fn create_file(file: FileToGen, flags: Vec<Flag>) {
     };
 
     let text = template_parser::get_full_text(&file, &flags);
+
+    match buffer.write_all(text.as_bytes()) {
+        Ok(_) => {},
+        Err(msg) => throw_error(format!(
+            "could not write to the created file {}.\nPlease report this bug.\nRust ERROR msg: {}",
+            file.name,
+            msg,
+        ))
+    }
 }
 
 mod template_parser {
     use super::{FileToGen, FileType, Flag};
-    use crate::hardcoded::{DATA_REPLACERS, DATA_VARS, CHILDREN_REPLACERS, CHILDREN_VARS};
+    use crate::hardcoded::{CHILDREN_REPLACERS, CHILDREN_VARS, DATA_REPLACERS, DATA_VARS};
 
     const NOTHING: &str = "";
 
@@ -150,8 +172,6 @@ mod template_parser {
             true => insert_vars(full_text, &CHILDREN_REPLACERS, &CHILDREN_VARS),
             false => clear_vars(full_text, &CHILDREN_VARS),
         };
-
-        println!("{}", full_text);
 
         full_text
     }
