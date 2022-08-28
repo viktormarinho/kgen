@@ -107,32 +107,50 @@ fn create_file(file: FileToGen, flags: Vec<Flag>) {
 
 mod template_parser {
     use super::{FileToGen, FileType, Flag};
+    use crate::hardcoded::{DATA_REPLACERS, DATA_VARS, CHILDREN_REPLACERS, CHILDREN_VARS};
+
+    const NOTHING: &str = "";
+
+    fn insert_vars(full_text: String, replacers: &[&str], vars: &[&str]) -> String {
+        let mut full_text = full_text;
+
+        for (index, replacer) in replacers.iter().enumerate() {
+            full_text = full_text.replace(vars[index], replacer);
+        }
+
+        full_text
+    }
+
+    fn clear_vars(full_text: String, vars: &[&str]) -> String {
+        let mut full_text = full_text;
+
+        for var in vars.iter() {
+            full_text = full_text.replace(var, NOTHING);
+        }
+
+        full_text
+    }
 
     pub fn get_full_text(file: &FileToGen, flags: &Vec<Flag>) -> String {
-        let mut full_text = match file.file_type {
+        let full_text = match file.file_type {
             FileType::Component => include_str!("./bases/Component.in"),
             FileType::Page => include_str!("./bases/Component.in"),
         };
 
         let mut full_text = full_text.replace("%COMPONENT_NAME%", file.name.as_str());
 
-        if flags.contains(&Flag::Data) {
-            let data_logic = include_str!("./bases/DataLogic.in");
-            let data_imports = include_str!("./bases/DataImports.in");
-            let data_type = include_str!("./bases/DataType.in");
-            full_text = full_text
-                .replace("%DATA_LOGIC%", data_logic)
-                .replace("%DATA_IMPORTS%", data_imports)
-                .replace("%DATA_TYPE%", data_type);
-        } else {
-            full_text = full_text
-                .replace("%DATA_LOGIC%", "")
-                .replace("%DATA_IMPORTS%", "")
-                .replace("%DATA_TYPE%", "");
-        }
+        full_text = match flags.contains(&Flag::Data) {
+            true => insert_vars(full_text, &DATA_REPLACERS, &DATA_VARS),
+            false => clear_vars(full_text, &DATA_VARS),
+        };
+
+        full_text = match flags.contains(&Flag::Children) {
+            true => insert_vars(full_text, &CHILDREN_REPLACERS, &CHILDREN_VARS),
+            false => clear_vars(full_text, &CHILDREN_VARS),
+        };
 
         println!("{}", full_text);
 
-        String::new()
+        full_text
     }
 }

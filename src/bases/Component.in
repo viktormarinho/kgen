@@ -4,7 +4,6 @@ import React from "react";
 interface %COMPONENT_NAME%Props {
     %CHILDREN_TYPE%
 }
-children: React.ReactNode;
 
 %DATA_TYPE%
 
@@ -13,7 +12,7 @@ export const %COMPONENT_NAME% = ({ %CHILDREN_EXISTS% }: %COMPONENT_NAME%Props) =
 
     return (
         <>
-          {children}
+          %CHILDREN_JSX%
         </>
     )
 }
