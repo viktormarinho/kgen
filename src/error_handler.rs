@@ -1,5 +1,6 @@
 use crate::args_parser::Arguments;
 use colored::Colorize;
+use crate::helper::show_help;
 
 pub fn throw_error(message: String) -> () {
     crate::helper::show_usage();
@@ -9,6 +10,9 @@ pub fn throw_error(message: String) -> () {
 }
 
 pub fn validate_arguments(arg_list: &Arguments) -> () {
+    if arg_list.len() == 0 {
+        show_help(&vec![String::from("--help")])
+    }
     if arg_list[0] == "--help" {
         return ();
     }
