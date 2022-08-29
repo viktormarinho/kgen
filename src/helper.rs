@@ -30,14 +30,14 @@ pub fn show_help(args: &Arguments) -> () {
             "-d".yellow()
         );
         println!(
+            "   {} | alias: {} | Adds children logic to the component.",
+            "--children".yellow(),
+            "-c".yellow()
+        );
+        println!(
             "   {} | alias: {} | Creates the component in the current directory.",
             "--local".yellow(),
             "-l".yellow()
-        );
-        println!(
-            "   {} | alias: {} | Zimbas.",
-            "--zimbas".yellow(),
-            "-z".yellow()
         );
         println!("\n");
 
